@@ -1,8 +1,11 @@
 import cv2 as cv
 import imutils
 import ctypes
+from playsound import playsound
+import time
 
 buffer = 20
+maxTargetLostTime = 2
 
 if __name__ == '__main__':
     # Get screen info
@@ -19,9 +22,15 @@ if __name__ == '__main__':
     # Get the facial detection cascade
     faceCascade = cv.CascadeClassifier(cv.data.haarcascades + "haarcascade_frontalface_alt.xml")
 
-    targetDetected = False
+    targetSpotted = False
     targetAcquired = False
+    targetLostTimer = 0
+    start = time.time()
     while True:
+        if time.time() - start >= 2:
+            start = time.time()
+            playsound('sounds/radar.wav')
+
         # Read frame and detect face
         success, img = cap.read()
         img = cv.flip(img, 1)
@@ -42,9 +51,10 @@ if __name__ == '__main__':
         img = cv.line(img, (imgCenter[0] + 15, imgCenter[1]), (imgCenter[0] - 15, imgCenter[1]), (0, 0, 255), 1)
 
         if len(faces) > 0:
-            if not targetDetected:
-                print("TARGET DETECTED")
-                targetDetected = True
+            if not targetSpotted:
+                targetSpotted = True
+                targetLostTimer = time.time()
+                playsound('sounds/target_spotted.wav')
 
             # Draw rectangle around face
             fx, fy, fw, fh = faces[0]
@@ -71,18 +81,21 @@ if __name__ == '__main__':
                     print(" and ", end="")
                 print("pitch down", end="")
                 pitch = True
+            print("")
 
-            if not yaw and not pitch:
+            if not pitch and not yaw:
                 if not targetAcquired:
-                    print("TARGET LOST")
-                    targetAcquired = False
-            else:
-                print("")
-                if targetAcquired:
-                    print("TARGET ACQUIRED")
                     targetAcquired = True
+                    playsound('sounds/target_acquired.wav')
+            else:
+                if targetAcquired:
+                    targetAcquired = False
+
         else:
-            targetDetected = False
+            if targetSpotted:
+                if time.time() - targetLostTimer >= maxTargetLostTime:
+                    targetSpotted = False
+                    playsound('sounds/target_lost.wav')
 
         # Show frame
         cv.imshow('Turret', img)
