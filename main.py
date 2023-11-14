@@ -4,6 +4,7 @@ import ctypes
 from playsound import playsound
 import time
 
+playSounds = True
 buffer = 20
 maxTargetLostTime = 2
 
@@ -29,7 +30,8 @@ if __name__ == '__main__':
     while True:
         if time.time() - start >= 2:
             start = time.time()
-            playsound('sounds/radar.wav')
+            if playSounds:
+                playsound('sounds/radar.wav')
 
         # Read frame and detect face
         success, img = cap.read()
@@ -54,7 +56,8 @@ if __name__ == '__main__':
             if not targetSpotted:
                 targetSpotted = True
                 targetLostTimer = time.time()
-                playsound('sounds/target_spotted.wav')
+                if playSounds:
+                    playsound('sounds/target_spotted.wav')
 
             # Draw rectangle around face
             fx, fy, fw, fh = faces[0]
@@ -86,7 +89,8 @@ if __name__ == '__main__':
             if not pitch and not yaw:
                 if not targetAcquired:
                     targetAcquired = True
-                    playsound('sounds/target_acquired.wav')
+                    if playSounds:
+                        playsound('sounds/target_acquired.wav')
             else:
                 if targetAcquired:
                     targetAcquired = False
@@ -95,7 +99,8 @@ if __name__ == '__main__':
             if targetSpotted:
                 if time.time() - targetLostTimer >= maxTargetLostTime:
                     targetSpotted = False
-                    playsound('sounds/target_lost.wav')
+                    if playSounds:
+                        playsound('sounds/target_lost.wav')
 
         # Show frame
         cv.imshow('Turret', img)
