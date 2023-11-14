@@ -16,7 +16,7 @@ if __name__ == '__main__':
         print("Could not open camera")
         exit(-1)
 
-    # Get the facial detection cascadeqq
+    # Get the facial detection cascade
     faceCascade = cv.CascadeClassifier(cv.data.haarcascades + "haarcascade_frontalface_alt.xml")
 
     targetDetected = False
@@ -74,13 +74,13 @@ if __name__ == '__main__':
 
             if not yaw and not pitch:
                 if not targetAcquired:
-                    print("TARGET ACQUIRED")
-                    targetAcquired = True
+                    print("TARGET LOST")
+                    targetAcquired = False
             else:
                 print("")
                 if targetAcquired:
-                    print("TARGET LOST")
-                    targetAcquired = False
+                    print("TARGET ACQUIRED")
+                    targetAcquired = True
         else:
             targetDetected = False
 
