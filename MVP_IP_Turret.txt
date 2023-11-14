@@ -2,6 +2,7 @@ MVP Project Image Processing
 
 •	Face detectie
 •	Turret bewegen
+•	Turret Idle bewegen
 •	Schieten
 •	Teams/kleur (extra)
 •	Geluid
