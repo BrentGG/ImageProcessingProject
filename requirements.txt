@@ -1,3 +1,4 @@
 opencv-python~=4.8.1.78
 imutils~=0.5.4
 playsound~=1.2.2
+pyserial~=3.5
