@@ -1,9 +1,9 @@
 MVP Project Image Processing
 
-•	Face detectie
-•	Turret bewegen
+•	Face detectie x
+•	Turret bewegen x
 •	Turret Idle bewegen
-•	Schieten
+•	Schieten x
 •	Teams/kleur (extra)
 •	Geluid
 •	Afstand
